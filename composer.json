@@ -1,0 +1,56 @@
+{
+    "name": "nswdpc/silverstripe-filetype-management",
+    "description": "Allow management of configured allowed file types in the administration area and on a per-upload field basis.",
+    "type": "silverstripe-vendormodule",
+    "keywords": [
+        "silverstripe",
+        "nsw",
+        "module",
+        "file",
+        "mimetypes",
+        "userforms"
+    ],
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "James",
+            "role": "Developer"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "git",
+            "url": "https://github.com/nswdpc/ci-files.git"
+        }
+    ],
+    "require": {
+        "silverstripe/siteconfig" : "^5",
+        "symbiote/silverstripe-multivaluefield": "^6"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "friendsofphp/php-cs-fixer": "^3",
+        "cambis/silverstripe-rector": "<1",
+        "phpunit/phpunit": "^9.5",
+        "syntro/silverstripe-phpstan": "^5",
+        "nswdpc/ci-files": "^1"
+    },
+    "suggest": {
+        "silverstripe/userforms": "For EditableFileField support"
+    },
+    "replace": {
+        "nswdpc/silverstripe-editablefilefield-filetypes": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "NSWDPC\\FileTypeManagement\\": "src/",
+            "NSWDPC\\FileTypeManagement\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "composer/installers": true,
+            "silverstripe/vendor-plugin": true
+        }
+    }
+}

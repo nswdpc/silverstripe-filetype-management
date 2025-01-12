@@ -1,0 +1,14 @@
+---
+Name: nswdpc/silverstripe-filetype-management
+---
+SilverStripe\SiteConfig\SiteConfig:
+  extensions:
+    - 'NSWDPC\FileTypeManagement\Extensions\SiteConfigExtension'
+---
+Name: nswdpc/silverstripe-filetype-management-editablefilefield
+Only:
+  moduleexists: 'silverstripe/userforms'
+---
+SilverStripe\UserForms\Model\EditableFormField\EditableFileField:
+  extensions:
+    - 'NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension'
