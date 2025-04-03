@@ -6,7 +6,7 @@ use NSWDPC\FileTypeManagement\Modules\Configuration;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\Forms\FileField;
+use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\ValidationException;
@@ -54,7 +54,7 @@ class FileTypeHandlingExtension extends DataExtension
     }
 
     /**
-     * Return the extensions to be used for the upload validator on the FileField
+     * Return the extensions to be used for the upload validator on the FileHandleField
      * The allowed extensions are:
      * - those selected for this field AND
      * - are in the current list of filtered, allowed, extensions
@@ -88,11 +88,11 @@ class FileTypeHandlingExtension extends DataExtension
 
     /**
      * Update form field with extension requirements set via upload Validator
-     * attached to the FileField
+     * attached to the FileHandleField
      * See: EditableFormField::doUpdateFormField()
-     * @param $field FileField
+     * @param $field FileHandleField
      */
-    public function afterUpdateFormField(FileField &$field)
+    public function afterUpdateFormField(FileHandleField &$field)
     {
         $extensions = $this->getExtensionsForValidator();
         // set extensions on validator
