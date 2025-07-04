@@ -21,6 +21,7 @@ class EditableFileFieldTest extends SapphireTest
 
     protected $runTests = false;
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();

@@ -15,6 +15,8 @@ use SilverStripe\ORM\ValidationResult;
 /**
  * Handle file types in field management
  * @author James
+ * @property ?string $SelectedFileTypes
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class FileTypeHandlingExtension extends DataExtension
 {
@@ -28,6 +30,7 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Validate input
      */
+    #[\Override]
     public function validate(ValidationResult $validationResult)
     {
         // the filtered list of allowed file types
@@ -149,6 +152,7 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Update fields
      */
+    #[\Override]
     public function updateCmsFields(FieldList $fields)
     {
         $source = $this->getFilteredAllowedExtensions();
@@ -183,6 +187,7 @@ class FileTypeHandlingExtension extends DataExtension
         if($description) {
             $selectorField->setDescription($description);
         }
+
         $fields->addFieldToTab(
             'Root.Main',
             $selectorField

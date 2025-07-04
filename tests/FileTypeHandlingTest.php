@@ -17,6 +17,7 @@ class FileTypeHandlingTest extends SapphireTest
 {
     protected $usesDatabase = true;
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();

@@ -14,6 +14,8 @@ use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 /**
  * File type confguration handling
  * @author James
+ * @property mixed $AllowedFileExtensions
+ * @extends \SilverStripe\ORM\DataExtension<(\SilverStripe\SiteConfig\SiteConfig & static)>
  */
 class SiteConfigExtension extends DataExtension
 {
@@ -71,6 +73,7 @@ class SiteConfigExtension extends DataExtension
     /**
      * Validate input
      */
+    #[\Override]
     public function validate(ValidationResult $validationResult)
     {
         $types = $this->getSystemAllowedFileTypes();
@@ -96,6 +99,7 @@ class SiteConfigExtension extends DataExtension
     /**
      * Update fields
      */
+    #[\Override]
     public function updateCMSFields(FieldList $fields)
     {
         $source = $this->getSystemAllowedFileTypes();

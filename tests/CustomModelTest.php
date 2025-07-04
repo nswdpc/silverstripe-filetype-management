@@ -21,6 +21,7 @@ class CustomModelTest extends SapphireTest
         CustomModel::class,
     ];
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -96,7 +97,7 @@ class CustomModelTest extends SapphireTest
             $model->SelectedFileTypes = json_encode($selectedExtensions);
             $model->write();
 
-        } catch (ValidationException $ve) {
+        } catch (ValidationException) {
             $msg = "exception thrown";
         }
 
