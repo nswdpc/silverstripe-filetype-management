@@ -6,7 +6,6 @@ use NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Control\Controller;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\ValidationException;
@@ -33,7 +32,7 @@ class EditableFileFieldTest extends SapphireTest
             ['jpg', 'jpeg', 'png','gif', 'doc', 'docx', 'pdf']
         );
 
-        if(!class_exists(EditableFileField::class)) {
+        if (!class_exists(EditableFileField::class)) {
             $this->markTestSkipped(
                 'silverstripe/userforms is required for this test',
             );

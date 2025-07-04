@@ -9,7 +9,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
 
 /**
@@ -184,7 +183,7 @@ class FileTypeHandlingExtension extends DataExtension
             ),
             $source
         );
-        if($description) {
+        if ($description) {
             $selectorField->setDescription($description);
         }
 

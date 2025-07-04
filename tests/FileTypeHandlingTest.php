@@ -3,9 +3,7 @@
 namespace NSWDPC\FileTypeManagement\Tests;
 
 use SilverStripe\Assets\File;
-use SilverStripe\Assets\Folder;
 use SilverStripe\Core\Config\Config;
-use SilverStripe\Control\Controller;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\ValidationException;
