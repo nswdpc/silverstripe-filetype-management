@@ -2,6 +2,7 @@
 
 namespace NSWDPC\FileTypeManagement\Tests;
 
+use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FileField;
