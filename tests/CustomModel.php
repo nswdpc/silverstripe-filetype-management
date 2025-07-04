@@ -11,6 +11,9 @@ use SilverStripe\ORM\DataObject;
  */
 class CustomModel extends DataObject implements TestOnly
 {
+
+    private static string $table_name = "FileTypeManagementCustomModel";
+
     private static array $extensions = [
         FileTypeHandlingExtension::class
     ];
