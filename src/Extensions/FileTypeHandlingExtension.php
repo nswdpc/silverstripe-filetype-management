@@ -2,7 +2,7 @@
 
 namespace NSWDPC\FileTypeManagement\Extensions;
 
-use NSWDPC\FileTypeManagement\Modules\Configuration;
+use NSWDPC\FileTypeManagement\Models\Configuration;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
