@@ -99,7 +99,7 @@ class CustomModelTest extends SapphireTest
             $model->SelectedFileTypes = json_encode($selectedExtensions);
             $model->write();
 
-        } catch (ValidationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException) {
             $msg = "exception thrown";
         }
 

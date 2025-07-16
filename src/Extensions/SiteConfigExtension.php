@@ -14,9 +14,9 @@ use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
  * File type confguration handling
  * @author James
  * @property mixed $AllowedFileExtensions
- * @extends \SilverStripe\ORM\DataExtension<(\SilverStripe\SiteConfig\SiteConfig & static)>
+ * @extends \SilverStripe\Core\Extension<\SilverStripe\SiteConfig\SiteConfig&static>
  */
-class SiteConfigExtension extends DataExtension
+class SiteConfigExtension extends \SilverStripe\Core\Extension
 {
     /**
      * @config
@@ -73,7 +73,7 @@ class SiteConfigExtension extends DataExtension
      * Validate input
      */
     #[\Override]
-    public function validate(ValidationResult $validationResult)
+    public function validate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         $types = $this->getSystemAllowedFileTypes();
         $supplied = $this->getOwner()->AllowedFileExtensions;
@@ -89,7 +89,7 @@ class SiteConfigExtension extends DataExtension
                             'types' => implode(", ", $diff)
                         ]
                     ),
-                    ValidationResult::TYPE_ERROR
+                    \SilverStripe\Core\Validation\ValidationResult::TYPE_ERROR
                 );
             }
         }

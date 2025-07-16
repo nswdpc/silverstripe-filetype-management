@@ -17,9 +17,9 @@ use SilverStripe\ORM\ValidationResult;
  * For EditableFileField handling, see EditableFileFieldExtension
  * @author James
  * @property ?string $SelectedFileTypes
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class FileTypeHandlingExtension extends DataExtension
+class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
 {
     /**
      * @config
@@ -32,7 +32,7 @@ class FileTypeHandlingExtension extends DataExtension
      * Validate input
      */
     #[\Override]
-    public function validate(ValidationResult $validationResult)
+    public function validate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         // the filtered list of allowed file types
         $types = $this->getFilteredAllowedExtensions();
@@ -52,7 +52,7 @@ class FileTypeHandlingExtension extends DataExtension
                             'types' => implode(", ", $diff)
                         ]
                     ),
-                    ValidationResult::TYPE_ERROR
+                    \SilverStripe\Core\Validation\ValidationResult::TYPE_ERROR
                 );
             }
         }

@@ -61,7 +61,7 @@ class FileTypeHandlingTest extends SapphireTest
             $config->write();
             /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             // exception handling
             $this->assertStringContainsString($extraType, $validationException->getMessage());
         }
