@@ -6,7 +6,6 @@ use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Test generic file type handling

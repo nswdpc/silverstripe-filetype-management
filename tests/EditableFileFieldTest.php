@@ -10,7 +10,6 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
 
 /**

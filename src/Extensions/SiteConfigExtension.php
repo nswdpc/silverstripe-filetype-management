@@ -5,8 +5,6 @@ namespace NSWDPC\FileTypeManagement\Extensions;
 use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationResult;
 use Symbiote\MultiValueField\Fields\MultiValueListField;
 use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
