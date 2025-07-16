@@ -40,7 +40,7 @@ class FileTypeHandlingExtension extends DataExtension
         // the selected file types
         // @phpstan-ignore property.notFound
         $extensions = $this->getOwner()->SelectedFileTypes;
-        if ($extensions) {
+        if (is_string($extensions) && $extensions !== '') {
             $extensions = json_decode($extensions, true);
             $diff = array_diff($extensions, $types);
             if ($diff !== []) {
