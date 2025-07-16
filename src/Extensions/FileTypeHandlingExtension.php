@@ -7,7 +7,6 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
-use SilverStripe\Forms\FormField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\ValidationResult;
