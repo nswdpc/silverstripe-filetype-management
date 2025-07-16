@@ -108,6 +108,7 @@ class EditableFileFieldTest extends SapphireTest
 
         try {
             $id = $field->write();
+            /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
         } catch (ValidationException $validationException) {
             // exception handling
@@ -299,6 +300,7 @@ class EditableFileFieldTest extends SapphireTest
 
         try {
             $id = $editableField->write();
+            /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
         } catch (ValidationException $validationException) {
             // exception handling

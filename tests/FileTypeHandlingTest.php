@@ -59,6 +59,7 @@ class FileTypeHandlingTest extends SapphireTest
         $config->AllowedFileExtensions = $allowed;
         try {
             $config->write();
+            /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
         } catch (ValidationException $validationException) {
             // exception handling
