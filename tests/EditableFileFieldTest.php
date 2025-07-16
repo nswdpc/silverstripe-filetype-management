@@ -58,6 +58,7 @@ class EditableFileFieldTest extends SapphireTest
         $config->AllowedFileExtensions = $images;
         $config->write();
 
+        /** @phpstan-ignore class.notFound */
         $field = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -68,6 +69,7 @@ class EditableFileFieldTest extends SapphireTest
 
         $id = $field->write();
 
+        /** @phpstan-ignore class.notFound */
         $checkField = EditableFileField::get()->byId($id);
         $this->assertTrue($checkField->hasExtension(EditableFileFieldExtension::class));
         // @phpstan-ignore method.notFound
@@ -96,6 +98,7 @@ class EditableFileFieldTest extends SapphireTest
         $config->AllowedFileExtensions = $images;
         $config->write();
 
+        /** @phpstan-ignore class.notFound */
         $field = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -130,6 +133,7 @@ class EditableFileFieldTest extends SapphireTest
         $config->AllowedFileExtensions = $images;
         $config->write();
 
+        /** @phpstan-ignore class.notFound */
         $field = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -139,6 +143,7 @@ class EditableFileFieldTest extends SapphireTest
         $field->SelectedFileTypes = null;
         $id = $field->write();
 
+        /** @phpstan-ignore class.notFound */
         $checkField = EditableFileField::get()->byId($id);
         $this->assertTrue($checkField->hasExtension(EditableFileFieldExtension::class));
         // @phpstan-ignore method.notFound
@@ -178,6 +183,7 @@ class EditableFileFieldTest extends SapphireTest
         ]);
         $folderId = $folder->write();
 
+        /** @phpstan-ignore class.notFound */
         $editableField = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -227,6 +233,7 @@ class EditableFileFieldTest extends SapphireTest
         $config->AllowedFileExtensions = $images;
         $config->write();
 
+        /** @phpstan-ignore class.notFound */
         $editableField = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -241,12 +248,14 @@ class EditableFileFieldTest extends SapphireTest
 
         // Config change to block gif
         Config::modify()->set(
+            /** @phpstan-ignore class.notFound */
             EditableFileField::class,
             'allowed_extensions_blacklist',
             $toBeDeniedExtension
         );
 
         // get validator allowed extensions
+        /** @phpstan-ignore class.notFound */
         $checkField = EditableFileField::get()->byId($id);
         $formField = $checkField->getFormField();
         $this->assertInstanceOf(FileHandleField::class, $formField);
@@ -281,6 +290,7 @@ class EditableFileFieldTest extends SapphireTest
         $config->AllowedFileExtensions = $images;
         $config->write();
 
+        /** @phpstan-ignore class.notFound */
         $editableField = EditableFileField::create([
             'Title' => 'JPG PNG Field',
             'FolderID' => $folderId
@@ -293,6 +303,7 @@ class EditableFileFieldTest extends SapphireTest
 
         // Config change to block gif
         Config::modify()->set(
+            /** @phpstan-ignore class.notFound */
             EditableFileField::class,
             'allowed_extensions_blacklist',
             $toBeDeniedExtensionList
