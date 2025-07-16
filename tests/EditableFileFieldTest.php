@@ -2,17 +2,19 @@
 
 namespace NSWDPC\FileTypeManagement\Tests;
 
+use NSWDPC\FileTypeManagement\Extensions\EditableFileFieldExtension;
 use NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension;
 use SilverStripe\Assets\File;
 use SilverStripe\Assets\Folder;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
+use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\ValidationException;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
 
 /**
- * Test upload page field creation
+ * Test editable file field handling
  */
 class EditableFileFieldTest extends SapphireTest
 {
@@ -25,18 +27,18 @@ class EditableFileFieldTest extends SapphireTest
     {
         parent::setUp();
 
+        if (!class_exists(EditableFileField::class)) {
+            $this->markTestSkipped(
+                'silverstripe/userforms is required for this test',
+            );
+        }
+
         // Set basic image + document allowed extensions
         Config::modify()->set(
             File::class,
             'allowed_extensions',
             ['jpg', 'jpeg', 'png','gif', 'doc', 'docx', 'pdf']
         );
-
-        if (!class_exists(EditableFileField::class)) {
-            $this->markTestSkipped(
-                'silverstripe/userforms is required for this test',
-            );
-        }
     }
 
     /**
@@ -67,6 +69,8 @@ class EditableFileFieldTest extends SapphireTest
         $id = $field->write();
 
         $checkField = EditableFileField::get()->byId($id);
+        $this->assertTrue($checkField->hasExtension(EditableFileFieldExtension::class));
+        // @phpstan-ignore method.notFound
         $extensionsForValidator = $checkField->getExtensionsForValidator();
 
         $this->assertEquals(
@@ -135,7 +139,8 @@ class EditableFileFieldTest extends SapphireTest
         $id = $field->write();
 
         $checkField = EditableFileField::get()->byId($id);
-
+        $this->assertTrue($checkField->hasExtension(EditableFileFieldExtension::class));
+        // @phpstan-ignore method.notFound
         $extensions = $checkField->getExtensionsForValidator();
         $defaults = FileTypeHandlingExtension::getDefaultAllowedFileExtensions();
 
@@ -184,11 +189,11 @@ class EditableFileFieldTest extends SapphireTest
 
         // Retrieve validator
         $formField = $editableField->getFormField();
-        $validator = $formField->getValidator();
-        $allowedExtensionsFromValidator = $validator->getAllowedExtensions();
+        $this->assertInstanceOf(FileHandleField::class, $formField);
+        $allowedExtensions = $formField->getAllowedExtensions();
 
         // All types should be selectable
-        $this->assertEquals($types, $allowedExtensionsFromValidator);
+        $this->assertEquals($types, $allowedExtensions);
 
         // drop zip from static config
         $updatedTypes = ['jpg', 'jpeg', 'png','gif'];
@@ -201,11 +206,11 @@ class EditableFileFieldTest extends SapphireTest
 
         // retrieve the form field again
         $formField = $editableField->getFormField();
-        $validator = $formField->getValidator();
-        $updatedAllowedExtensionsFromValidator = $validator->getAllowedExtensions();
+        $this->assertInstanceOf(FileHandleField::class, $formField);
+        $updatedAllowedExtensions = $formField->getAllowedExtensions();
 
         // zip should be disallowed
-        $this->assertEquals($updatedTypes, $updatedAllowedExtensionsFromValidator);
+        $this->assertEquals($updatedTypes, $updatedAllowedExtensions);
     }
 
     public function testFieldDenyList(): void
@@ -243,12 +248,12 @@ class EditableFileFieldTest extends SapphireTest
         // get validator allowed extensions
         $checkField = EditableFileField::get()->byId($id);
         $formField = $checkField->getFormField();
-        $validator = $formField->getValidator();
-        $updatedAllowedExtensionsFromValidator = $validator->getAllowedExtensions();
+        $this->assertInstanceOf(FileHandleField::class, $formField);
+        $updatedAllowedExtensions = $formField->getAllowedExtensions();
 
         $this->assertEquals(
             $baseExtensions, // only base extensions should be allowed
-            $updatedAllowedExtensionsFromValidator
+            $updatedAllowedExtensions
         );
     }
 

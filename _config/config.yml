@@ -11,4 +11,4 @@ Only:
 ---
 SilverStripe\UserForms\Model\EditableFormField\EditableFileField:
   extensions:
-    - 'NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension'
+    - 'NSWDPC\FileTypeManagement\Extensions\EditableFileFieldExtension'

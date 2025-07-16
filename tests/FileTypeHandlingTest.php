@@ -9,7 +9,7 @@ use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\ValidationException;
 
 /**
- * Test upload page field creation
+ * Test generic file type handling
  */
 class FileTypeHandlingTest extends SapphireTest
 {

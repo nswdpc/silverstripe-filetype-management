@@ -7,12 +7,15 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
+use SilverStripe\Forms\FormField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\DataExtension;
 use SilverStripe\ORM\ValidationResult;
 
 /**
  * Handle file types in field management
+ * Apply this extension to a data model that requires file type restrictions
+ * For EditableFileField handling, see EditableFileFieldExtension
  * @author James
  * @property ?string $SelectedFileTypes
  * @extends \SilverStripe\ORM\DataExtension<static>
@@ -35,6 +38,7 @@ class FileTypeHandlingExtension extends DataExtension
         // the filtered list of allowed file types
         $types = $this->getFilteredAllowedExtensions();
         // the selected file types
+        // @phpstan-ignore property.notFound
         $extensions = $this->getOwner()->SelectedFileTypes;
         if ($extensions) {
             $extensions = json_decode($extensions, true);
@@ -70,6 +74,7 @@ class FileTypeHandlingExtension extends DataExtension
         }
 
         // Selected extensions
+        // @phpstan-ignore property.notFound
         $extensions = $this->getOwner()->SelectedFileTypes;
         // string values are stored JSON encoded by CheckboxsetField
         $extensions = json_decode($extensions ?? '', true);
@@ -86,31 +91,6 @@ class FileTypeHandlingExtension extends DataExtension
         }
 
         return $extensionsForValidator;
-    }
-
-    /**
-     * Update form field with extension requirements set via upload Validator
-     * attached to the FileHandleField
-     * See: EditableFormField::doUpdateFormField()
-     * @param $field FileHandleField
-     */
-    public function afterUpdateFormField(FileHandleField &$field)
-    {
-        $extensions = $this->getExtensionsForValidator();
-        // set extensions on validator
-        $validator = $field->getValidator();
-        $validator->setAllowedExtensions($extensions);
-
-        // set a right title on the field showing valid files
-        $rightTitle = $field->RightTitle();
-        $fileTypesSuffix = _t(
-            self::class . '.PUBLIC_FILE_LIST',
-            'Allowed types: {types}',
-            [
-                'types' => implode(", ", array_values($extensions))
-            ]
-        );
-        $field->setRightTitle(trim($rightTitle . "\n" . $fileTypesSuffix));
     }
 
     /**

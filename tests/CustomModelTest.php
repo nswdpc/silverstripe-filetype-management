@@ -2,6 +2,7 @@
 
 namespace NSWDPC\FileTypeManagement\Tests;
 
+use NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension;
 use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
@@ -10,7 +11,7 @@ use SilverStripe\ORM\ValidationException;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
- * Test upload page field creation
+ * Test custom model file type handling
  */
 class CustomModelTest extends SapphireTest
 {
@@ -48,11 +49,12 @@ class CustomModelTest extends SapphireTest
         $config->write();
 
         $model = CustomModel::create();
+        $this->assertTrue($model->hasExtension(FileTypeHandlingExtension::class));
+
         // set a list of extensions
         $selectedExtensions = ['jpg','png'];
         $model->SelectedFileTypes = json_encode($selectedExtensions);
         $model->write();
-
         $field = FileField::create(
             'TestFileField',
             'Test file field'
