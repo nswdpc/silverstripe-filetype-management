@@ -106,7 +106,7 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
         $config = SiteConfig::current_site_config();
         $types = $config->getFilteredAllowedExtensions();
         $source = [];
-        if (is_array($types) && $types !== []) {
+        if ($types !== []) {
             // drop types that are denied via configuration
             $denyList = Config::inst()->get(Configuration::class, 'allowed_extensions_denylist');
             if (is_array($denyList) && $denyList !== []) {
