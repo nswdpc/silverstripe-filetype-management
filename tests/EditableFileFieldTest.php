@@ -141,6 +141,7 @@ class EditableFileFieldTest extends SapphireTest
 
         // this must trigger default
         $field->SelectedFileTypes = null;
+
         $id = $field->write();
 
         /** @phpstan-ignore class.notFound */

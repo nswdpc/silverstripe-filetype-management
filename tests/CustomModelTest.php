@@ -55,6 +55,7 @@ class CustomModelTest extends SapphireTest
         $selectedExtensions = ['jpg','png'];
         $model->SelectedFileTypes = json_encode($selectedExtensions);
         $model->write();
+
         $field = FileField::create(
             'TestFileField',
             'Test file field'
