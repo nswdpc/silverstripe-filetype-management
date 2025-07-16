@@ -70,8 +70,7 @@ class SiteConfigExtension extends \SilverStripe\Core\Extension
     /**
      * Validate input
      */
-    #[\Override]
-    public function validate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
+    public function updateValidate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         $types = $this->getSystemAllowedFileTypes();
         $supplied = $this->getOwner()->AllowedFileExtensions;
@@ -96,7 +95,6 @@ class SiteConfigExtension extends \SilverStripe\Core\Extension
     /**
      * Update fields
      */
-    #[\Override]
     public function updateCMSFields(FieldList $fields)
     {
         $source = $this->getSystemAllowedFileTypes();

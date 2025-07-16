@@ -29,8 +29,7 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
     /**
      * Validate input
      */
-    #[\Override]
-    public function validate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
+    public function updateValidate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         // the filtered list of allowed file types
         $types = $this->getFilteredAllowedExtensions();
@@ -128,7 +127,6 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
     /**
      * Update fields
      */
-    #[\Override]
     public function updateCmsFields(FieldList $fields)
     {
         $source = $this->getFilteredAllowedExtensions();
