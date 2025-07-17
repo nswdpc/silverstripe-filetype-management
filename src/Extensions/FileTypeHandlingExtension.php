@@ -8,8 +8,6 @@ use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationResult;
 
 /**
  * Handle file types in field management
@@ -17,9 +15,9 @@ use SilverStripe\ORM\ValidationResult;
  * For EditableFileField handling, see EditableFileFieldExtension
  * @author James
  * @property ?string $SelectedFileTypes
- * @extends \SilverStripe\ORM\DataExtension<static>
+ * @extends \SilverStripe\Core\Extension<static>
  */
-class FileTypeHandlingExtension extends DataExtension
+class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
 {
     /**
      * @config
@@ -31,8 +29,7 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Validate input
      */
-    #[\Override]
-    public function validate(ValidationResult $validationResult)
+    public function updateValidate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         // the filtered list of allowed file types
         $types = $this->getFilteredAllowedExtensions();
@@ -52,7 +49,7 @@ class FileTypeHandlingExtension extends DataExtension
                             'types' => implode(", ", $diff)
                         ]
                     ),
-                    ValidationResult::TYPE_ERROR
+                    \SilverStripe\Core\Validation\ValidationResult::TYPE_ERROR
                 );
             }
         }
@@ -109,7 +106,7 @@ class FileTypeHandlingExtension extends DataExtension
         $config = SiteConfig::current_site_config();
         $types = $config->getFilteredAllowedExtensions();
         $source = [];
-        if (is_array($types) && $types !== []) {
+        if ($types !== []) {
             // drop types that are denied via configuration
             $denyList = Config::inst()->get(Configuration::class, 'allowed_extensions_denylist');
             if (is_array($denyList) && $denyList !== []) {
@@ -130,7 +127,6 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Update fields
      */
-    #[\Override]
     public function updateCmsFields(FieldList $fields)
     {
         $source = $this->getFilteredAllowedExtensions();

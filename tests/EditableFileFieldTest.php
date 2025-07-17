@@ -10,7 +10,6 @@ use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
 
 /**
@@ -113,7 +112,7 @@ class EditableFileFieldTest extends SapphireTest
             $id = $field->write();
             /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             // exception handling
             $this->assertStringContainsString($extraType, $validationException->getMessage());
         }
@@ -314,7 +313,7 @@ class EditableFileFieldTest extends SapphireTest
             $id = $editableField->write();
             /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             // exception handling
             $this->assertStringContainsString($toBeDeniedExtension, $validationException->getMessage());
         }
