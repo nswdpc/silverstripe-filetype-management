@@ -2,19 +2,22 @@
 
 namespace NSWDPC\FileTypeManagement\Extensions;
 
-use NSWDPC\FileTypeManagement\Modules\Configuration;
+use NSWDPC\FileTypeManagement\Models\Configuration;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\CheckboxSetField;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\SiteConfig\SiteConfig;
 use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
 
 /**
  * Handle file types in field management
+ * Apply this extension to a data model that requires file type restrictions
+ * For EditableFileField handling, see EditableFileFieldExtension
  * @author James
+ * @property ?string $SelectedFileTypes
+ * @extends \SilverStripe\ORM\DataExtension<static>
  */
 class FileTypeHandlingExtension extends DataExtension
 {
@@ -28,13 +31,15 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Validate input
      */
+    #[\Override]
     public function validate(ValidationResult $validationResult)
     {
         // the filtered list of allowed file types
         $types = $this->getFilteredAllowedExtensions();
         // the selected file types
+        // @phpstan-ignore property.notFound
         $extensions = $this->getOwner()->SelectedFileTypes;
-        if ($extensions) {
+        if (is_string($extensions) && $extensions !== '') {
             $extensions = json_decode($extensions, true);
             $diff = array_diff($extensions, $types);
             if ($diff !== []) {
@@ -68,6 +73,7 @@ class FileTypeHandlingExtension extends DataExtension
         }
 
         // Selected extensions
+        // @phpstan-ignore property.notFound
         $extensions = $this->getOwner()->SelectedFileTypes;
         // string values are stored JSON encoded by CheckboxsetField
         $extensions = json_decode($extensions ?? '', true);
@@ -84,31 +90,6 @@ class FileTypeHandlingExtension extends DataExtension
         }
 
         return $extensionsForValidator;
-    }
-
-    /**
-     * Update form field with extension requirements set via upload Validator
-     * attached to the FileHandleField
-     * See: EditableFormField::doUpdateFormField()
-     * @param $field FileHandleField
-     */
-    public function afterUpdateFormField(FileHandleField &$field)
-    {
-        $extensions = $this->getExtensionsForValidator();
-        // set extensions on validator
-        $validator = $field->getValidator();
-        $validator->setAllowedExtensions($extensions);
-
-        // set a right title on the field showing valid files
-        $rightTitle = $field->RightTitle();
-        $fileTypesSuffix = _t(
-            self::class . '.PUBLIC_FILE_LIST',
-            'Allowed types: {types}',
-            [
-                'types' => implode(", ", array_values($extensions))
-            ]
-        );
-        $field->setRightTitle(trim($rightTitle . "\n" . $fileTypesSuffix));
     }
 
     /**
@@ -149,6 +130,7 @@ class FileTypeHandlingExtension extends DataExtension
     /**
      * Update fields
      */
+    #[\Override]
     public function updateCmsFields(FieldList $fields)
     {
         $source = $this->getFilteredAllowedExtensions();
@@ -156,8 +138,9 @@ class FileTypeHandlingExtension extends DataExtension
         if (count($source) == 0) {
             $description = _t(
                 self::class . '.NO_CONFIGURED_FILE_TYPES',
-                'There are no configured file types. Please ask an administrator to set these up.'
-                . '<br>The field will be restricted to these file types until this is done: <code>{types}</code>',
+                'There are no configured file types. Please ask an administrator to set these up in Settings > Uploads.'
+                . "\n"
+                . 'The field will be restricted to the following file types until this is done: {types}',
                 [
                     'types' => implode(", ", array_values($default))
                 ]
@@ -165,7 +148,7 @@ class FileTypeHandlingExtension extends DataExtension
         } else {
             $description = _t(
                 self::class . '.IF_NOTHING_SELECTED_DEFAULT_FILE_TYPES',
-                'If nothing is selected, the field will be restricted to these file types: <code>{types}</code>',
+                'If nothing is selected, the field will be restricted to these file types: {types}',
                 [
                     'types' => implode(", ", array_values($default))
                 ]
@@ -180,9 +163,10 @@ class FileTypeHandlingExtension extends DataExtension
             ),
             $source
         );
-        if($description) {
-            $selectorField->setDescription($description);
+        if ($description) {
+            $selectorField->setDescription(nl2br(htmlspecialchars($description)));
         }
+
         $fields->addFieldToTab(
             'Root.Main',
             $selectorField

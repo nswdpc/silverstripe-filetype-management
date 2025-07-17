@@ -6,7 +6,6 @@ use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\ORM\ValidationResult;
 use Symbiote\MultiValueField\Fields\MultiValueListField;
 use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
@@ -14,6 +13,8 @@ use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 /**
  * File type confguration handling
  * @author James
+ * @property mixed $AllowedFileExtensions
+ * @extends \SilverStripe\ORM\DataExtension<(\SilverStripe\SiteConfig\SiteConfig & static)>
  */
 class SiteConfigExtension extends DataExtension
 {
@@ -71,6 +72,7 @@ class SiteConfigExtension extends DataExtension
     /**
      * Validate input
      */
+    #[\Override]
     public function validate(ValidationResult $validationResult)
     {
         $types = $this->getSystemAllowedFileTypes();
@@ -96,6 +98,7 @@ class SiteConfigExtension extends DataExtension
     /**
      * Update fields
      */
+    #[\Override]
     public function updateCMSFields(FieldList $fields)
     {
         $source = $this->getSystemAllowedFileTypes();

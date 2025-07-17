@@ -3,7 +3,8 @@
 namespace NSWDPC\FileTypeManagement\Tests;
 
 use NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension;
-use SilverStripe\Control\Controller;
+use NSWDPC\FileTypeManagement\Models\Configuration;
+use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FileField;
@@ -11,7 +12,7 @@ use SilverStripe\ORM\ValidationException;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
- * Test upload page field creation
+ * Test custom model file type handling
  */
 class CustomModelTest extends SapphireTest
 {
@@ -21,6 +22,7 @@ class CustomModelTest extends SapphireTest
         CustomModel::class,
     ];
 
+    #[\Override]
     public function setUp(): void
     {
         parent::setUp();
@@ -48,6 +50,8 @@ class CustomModelTest extends SapphireTest
         $config->write();
 
         $model = CustomModel::create();
+        $this->assertTrue($model->hasExtension(FileTypeHandlingExtension::class));
+
         // set a list of extensions
         $selectedExtensions = ['jpg','png'];
         $model->SelectedFileTypes = json_encode($selectedExtensions);
@@ -96,11 +100,43 @@ class CustomModelTest extends SapphireTest
             $model->SelectedFileTypes = json_encode($selectedExtensions);
             $model->write();
 
-        } catch (ValidationException $ve) {
+        } catch (ValidationException) {
             $msg = "exception thrown";
         }
 
         $this->assertEquals("exception thrown", $msg);
+    }
+
+    public function testCustomModelAllowedExtensionsDenyList(): void
+    {
+
+        Config::modify()->set(
+            Configuration::class,
+            'allowed_extensions_denylist',
+            ['gif']
+        );
+
+        // set restricted set of file types
+        $images = ['jpg','jpeg','png','gif'];
+        $config = SiteConfig::current_site_config();
+        // set a default set of images
+        $config->AllowedFileExtensions = $images;
+        $config->write();
+
+        $model = CustomModel::create();
+        // set a list of extensions
+        $selectedExtensions = ['jpg','png','gif'];
+        $model->SelectedFileTypes = json_encode($selectedExtensions);
+
+        $msg = "";
+        try {
+            $model->write();
+        } catch (ValidationException $validationException) {
+            $msg = $validationException->getMessage();
+        }
+
+        $this->assertEquals("The following types are disallowed: gif", $msg);
+
     }
 
 }
