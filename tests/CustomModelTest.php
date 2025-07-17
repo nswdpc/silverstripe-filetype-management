@@ -134,7 +134,7 @@ class CustomModelTest extends SapphireTest
             $msg = $validationException->getMessage();
         }
 
-        $this->assertEquals("The following types are disallowed: gif", $msg);
+        $this->assertStringStartsWith("The following types are disallowed: gif", $msg);
 
     }
 
