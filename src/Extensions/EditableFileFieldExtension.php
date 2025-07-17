@@ -45,6 +45,7 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
      * @inheritdoc
      * Include removal of extensions found in EditableFileField.allowed_extensions_blacklist
      */
+    #[\Override]
     protected function getFilteredAllowedExtensions(): array
     {
         $filteredAllowedExtensions = parent::getFilteredAllowedExtensions();
