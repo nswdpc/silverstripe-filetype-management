@@ -21,6 +21,9 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
     {
         if ($field instanceof FormField) {
             $extensions = $this->getExtensionsForValidator();
+            // further restrict by allowed extensions already set
+            $allowedExtensions = $field->getAllowedExtensions();
+            $extensions = array_intersect($extensions, $allowedExtensions);
             $field->setAllowedExtensions($extensions);
 
             // set a right title on the field showing valid files
