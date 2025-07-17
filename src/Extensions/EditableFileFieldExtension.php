@@ -2,8 +2,10 @@
 
 namespace NSWDPC\FileTypeManagement\Extensions;
 
+use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\Forms\FormField;
+use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
 
 /**
  * Support EditableFileField handling
@@ -36,6 +38,21 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
                 ]
             );
             $field->setRightTitle(trim($rightTitle . "\n" . $fileTypesSuffix));
+        }
+    }
+
+    /**
+     * @inheritdoc
+     * Include removal of extensions found in EditableFileField.allowed_extensions_blacklist
+     */
+    protected function getFilteredAllowedExtensions(): array
+    {
+        $filteredAllowedExtensions = parent::getFilteredAllowedExtensions();
+        $deniedExtensions = Config::inst()->get(EditableFileField::class, 'allowed_extensions_blacklist');
+        if(is_array($deniedExtensions) && $deniedExtensions != []) {
+            return array_diff($filteredAllowedExtensions, $deniedExtensions);
+        } else {
+            return $filteredAllowedExtensions;
         }
     }
 }
