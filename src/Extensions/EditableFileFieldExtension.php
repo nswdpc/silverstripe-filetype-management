@@ -3,6 +3,7 @@
 namespace NSWDPC\FileTypeManagement\Extensions;
 
 use SilverStripe\Core\Config\Config;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\FileHandleField;
 use SilverStripe\Forms\FormField;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
@@ -55,6 +56,27 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
             return array_diff($filteredAllowedExtensions, $deniedExtensions);
         } else {
             return $filteredAllowedExtensions;
+        }
+    }
+
+    /**
+     * Update fields
+     */
+    #[\Override]
+    public function updateCmsFields(FieldList $fields)
+    {
+        parent::updateCmsFields($fields);
+        /** @phpstan-ignore class.notFound */
+        $deniedExtensions = Config::inst()->get(EditableFileField::class, 'allowed_extensions_blacklist');
+        if (is_array($deniedExtensions) && $deniedExtensions != []) {
+            $selectedFileTypesField = $fields->dataFieldByName('SelectedFileTypes');
+            $selectedFileTypesField->setRightTitle(_t(
+                self::class . '.EDITABLE_FILE_FILE_FIELD_DENIED_EXTENSIONS',
+                'The following file types are denied by system configuration: {types}',
+                [
+                    'types' => implode(", ", $deniedExtensions)
+                ]
+            ));
         }
     }
 }
