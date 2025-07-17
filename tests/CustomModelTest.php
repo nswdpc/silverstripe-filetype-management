@@ -3,6 +3,7 @@
 namespace NSWDPC\FileTypeManagement\Tests;
 
 use NSWDPC\FileTypeManagement\Extensions\FileTypeHandlingExtension;
+use NSWDPC\FileTypeManagement\Models\Configuration;
 use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
@@ -103,6 +104,38 @@ class CustomModelTest extends SapphireTest
         }
 
         $this->assertEquals("exception thrown", $msg);
+    }
+
+    public function testCustomModelAllowedExtensionsDenyList(): void
+    {
+
+        Config::modify()->set(
+            Configuration::class,
+            'allowed_extensions_denylist',
+            ['gif']
+        );
+
+        // set restricted set of file types
+        $images = ['jpg','jpeg','png','gif'];
+        $config = SiteConfig::current_site_config();
+        // set a default set of images
+        $config->AllowedFileExtensions = $images;
+        $config->write();
+
+        $model = CustomModel::create();
+        // set a list of extensions
+        $selectedExtensions = ['jpg','png','gif'];
+        $model->SelectedFileTypes = json_encode($selectedExtensions);
+
+        $msg = "";
+        try {
+            $model->write();
+        } catch (ValidationException $validationException) {
+            $msg = $validationException->getMessage();
+        }
+
+        $this->assertEquals("The following types are disallowed: gif", $msg);
+
     }
 
 }
