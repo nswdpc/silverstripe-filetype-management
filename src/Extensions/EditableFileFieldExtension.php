@@ -50,7 +50,7 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
     {
         $filteredAllowedExtensions = parent::getFilteredAllowedExtensions();
         $deniedExtensions = Config::inst()->get(EditableFileField::class, 'allowed_extensions_blacklist');
-        if(is_array($deniedExtensions) && $deniedExtensions != []) {
+        if (is_array($deniedExtensions) && $deniedExtensions != []) {
             return array_diff($filteredAllowedExtensions, $deniedExtensions);
         } else {
             return $filteredAllowedExtensions;
