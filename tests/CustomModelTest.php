@@ -130,7 +130,7 @@ class CustomModelTest extends SapphireTest
         $msg = "";
         try {
             $model->write();
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             $msg = $validationException->getMessage();
         }
 
