@@ -138,8 +138,9 @@ class FileTypeHandlingExtension extends DataExtension
         if (count($source) == 0) {
             $description = _t(
                 self::class . '.NO_CONFIGURED_FILE_TYPES',
-                'There are no configured file types. Please ask an administrator to set these up.'
-                . '<br>The field will be restricted to these file types until this is done: <code>{types}</code>',
+                'There are no configured file types. Please ask an administrator to set these up in Settings > Uploads.'
+                . "\n"
+                . 'The field will be restricted to the following file types until this is done: {types}',
                 [
                     'types' => implode(", ", array_values($default))
                 ]
@@ -147,7 +148,7 @@ class FileTypeHandlingExtension extends DataExtension
         } else {
             $description = _t(
                 self::class . '.IF_NOTHING_SELECTED_DEFAULT_FILE_TYPES',
-                'If nothing is selected, the field will be restricted to these file types: <code>{types}</code>',
+                'If nothing is selected, the field will be restricted to these file types: {types}',
                 [
                     'types' => implode(", ", array_values($default))
                 ]
@@ -163,7 +164,7 @@ class FileTypeHandlingExtension extends DataExtension
             $source
         );
         if ($description) {
-            $selectorField->setDescription($description);
+            $selectorField->setDescription(nl2br(htmlspecialchars($description)));
         }
 
         $fields->addFieldToTab(
