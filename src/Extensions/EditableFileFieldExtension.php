@@ -8,7 +8,7 @@ use SilverStripe\Forms\FormField;
 use SilverStripe\UserForms\Model\EditableFormField\EditableFileField;
 
 /**
- * Support EditableFileField handling
+ * Support \SilverStripe\UserForms\Model\EditableFormField\EditableFileField handling
  * @author James
  */
 class EditableFileFieldExtension extends FileTypeHandlingExtension
@@ -49,6 +49,7 @@ class EditableFileFieldExtension extends FileTypeHandlingExtension
     protected function getFilteredAllowedExtensions(): array
     {
         $filteredAllowedExtensions = parent::getFilteredAllowedExtensions();
+        /** @phpstan-ignore class.notFound */
         $deniedExtensions = Config::inst()->get(EditableFileField::class, 'allowed_extensions_blacklist');
         if (is_array($deniedExtensions) && $deniedExtensions != []) {
             return array_diff($filteredAllowedExtensions, $deniedExtensions);
