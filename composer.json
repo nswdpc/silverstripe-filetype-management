@@ -19,7 +19,7 @@
     ],
     "require": {
         "silverstripe/siteconfig" : "^6",
-        "symbiote/silverstripe-multivaluefield": "^7 || dev-7"
+        "symbiote/silverstripe-multivaluefield": "^7"
     },
     "require-dev": {
         "cambis/silverstripe-rector": "^2",
