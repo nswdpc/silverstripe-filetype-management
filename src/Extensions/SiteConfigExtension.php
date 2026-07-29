@@ -57,7 +57,7 @@ class SiteConfigExtension extends \SilverStripe\Core\Extension
         // the current system setting
         $systemAllowedExtensions = $this->getSystemAllowedFileTypes();
         // the filtered list of allowed extensions are those selected that are also in the system allowed extensions
-        if (count($systemAllowedExtensions) == 0) {
+        if ($systemAllowedExtensions === []) {
             // none allowed
             return [];
         }
@@ -98,7 +98,7 @@ class SiteConfigExtension extends \SilverStripe\Core\Extension
     public function updateCMSFields(FieldList $fields)
     {
         $source = $this->getSystemAllowedFileTypes();
-        if (count($source) == 0) {
+        if ($source === []) {
             $description = _t(
                 self::class . '.NO_SYSTEM_CONFIGURED_FILE_TYPES',
                 'There are no configured file types at the system level.'

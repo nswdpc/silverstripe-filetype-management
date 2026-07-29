@@ -64,7 +64,7 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
     public function getExtensionsForValidator(): array
     {
         $filteredAllowed = $this->getFilteredAllowedExtensions();
-        if (count($filteredAllowed) == 0) {
+        if ($filteredAllowed === []) {
             // nothing is allowed, use default
             return self::getDefaultAllowedFileExtensions();
         }
@@ -82,7 +82,7 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
 
         // Get extensions for this field, that are also in the $filteredAllowed list
         $extensionsForValidator = array_intersect($extensions, $filteredAllowed);
-        if (count($extensionsForValidator) == 0) {
+        if ($extensionsForValidator === []) {
             $extensionsForValidator = self::getDefaultAllowedFileExtensions();
         }
 
@@ -131,7 +131,7 @@ class FileTypeHandlingExtension extends \SilverStripe\Core\Extension
     {
         $source = $this->getFilteredAllowedExtensions();
         $default = self::getDefaultAllowedFileExtensions();
-        if (count($source) == 0) {
+        if ($source === []) {
             $description = _t(
                 self::class . '.NO_CONFIGURED_FILE_TYPES',
                 'There are no configured file types. Please ask an administrator to set these up in Settings > Uploads.'
