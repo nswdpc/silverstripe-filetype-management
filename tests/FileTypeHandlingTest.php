@@ -6,7 +6,6 @@ use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\SiteConfig\SiteConfig;
-use SilverStripe\ORM\ValidationException;
 
 /**
  * Test generic file type handling
@@ -61,7 +60,7 @@ class FileTypeHandlingTest extends SapphireTest
             $config->write();
             /** @phpstan-ignore method.impossibleType */
             $this->assertTrue(false, "Write should have triggered validation exception");
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             // exception handling
             $this->assertStringContainsString($extraType, $validationException->getMessage());
         }

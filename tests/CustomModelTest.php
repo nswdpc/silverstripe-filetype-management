@@ -8,7 +8,6 @@ use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Dev\SapphireTest;
 use SilverStripe\Forms\FileField;
-use SilverStripe\ORM\ValidationException;
 use SilverStripe\SiteConfig\SiteConfig;
 
 /**
@@ -100,7 +99,7 @@ class CustomModelTest extends SapphireTest
             $model->SelectedFileTypes = json_encode($selectedExtensions);
             $model->write();
 
-        } catch (ValidationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException) {
             $msg = "exception thrown";
         }
 
@@ -131,11 +130,11 @@ class CustomModelTest extends SapphireTest
         $msg = "";
         try {
             $model->write();
-        } catch (ValidationException $validationException) {
+        } catch (\SilverStripe\Core\Validation\ValidationException $validationException) {
             $msg = $validationException->getMessage();
         }
 
-        $this->assertEquals("The following types are disallowed: gif", $msg);
+        $this->assertStringStartsWith("The following types are disallowed: gif", $msg);
 
     }
 

@@ -5,8 +5,6 @@ namespace NSWDPC\FileTypeManagement\Extensions;
 use SilverStripe\Assets\File;
 use SilverStripe\Core\Config\Config;
 use SilverStripe\Forms\FieldList;
-use SilverStripe\ORM\DataExtension;
-use SilverStripe\ORM\ValidationResult;
 use Symbiote\MultiValueField\Fields\MultiValueListField;
 use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
 
@@ -14,9 +12,9 @@ use Symbiote\MultiValueField\ORM\FieldType\MultiValueField;
  * File type confguration handling
  * @author James
  * @property mixed $AllowedFileExtensions
- * @extends \SilverStripe\ORM\DataExtension<(\SilverStripe\SiteConfig\SiteConfig & static)>
+ * @extends \SilverStripe\Core\Extension<\SilverStripe\SiteConfig\SiteConfig&static>
  */
-class SiteConfigExtension extends DataExtension
+class SiteConfigExtension extends \SilverStripe\Core\Extension
 {
     /**
      * @config
@@ -59,7 +57,7 @@ class SiteConfigExtension extends DataExtension
         // the current system setting
         $systemAllowedExtensions = $this->getSystemAllowedFileTypes();
         // the filtered list of allowed extensions are those selected that are also in the system allowed extensions
-        if (count($systemAllowedExtensions) == 0) {
+        if ($systemAllowedExtensions === []) {
             // none allowed
             return [];
         }
@@ -72,8 +70,7 @@ class SiteConfigExtension extends DataExtension
     /**
      * Validate input
      */
-    #[\Override]
-    public function validate(ValidationResult $validationResult)
+    public function updateValidate(\SilverStripe\Core\Validation\ValidationResult $validationResult)
     {
         $types = $this->getSystemAllowedFileTypes();
         $supplied = $this->getOwner()->AllowedFileExtensions;
@@ -89,7 +86,7 @@ class SiteConfigExtension extends DataExtension
                             'types' => implode(", ", $diff)
                         ]
                     ),
-                    ValidationResult::TYPE_ERROR
+                    \SilverStripe\Core\Validation\ValidationResult::TYPE_ERROR
                 );
             }
         }
@@ -98,11 +95,10 @@ class SiteConfigExtension extends DataExtension
     /**
      * Update fields
      */
-    #[\Override]
     public function updateCMSFields(FieldList $fields)
     {
         $source = $this->getSystemAllowedFileTypes();
-        if (count($source) == 0) {
+        if ($source === []) {
             $description = _t(
                 self::class . '.NO_SYSTEM_CONFIGURED_FILE_TYPES',
                 'There are no configured file types at the system level.'
